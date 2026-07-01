@@ -71,14 +71,21 @@ league-table moves, notable deal roles.
 Rules:
   - Use the web_search tool to find genuinely recent, real items (roughly the last \
 24-48 hours). Only include stories with a working source URL from the results.
-  - Prefer primary and reputable sources: CBRT / BDDK / SPK releases, Reuters, \
-Bloomberg, IFR, GlobalCapital, Debtwire, AA, Daily Sabah, Financial Times.
+  - ALSO check these primary sources directly with the web_fetch tool on these exact \
+URLs, then follow through to the individual disclosures / releases you find:
+      * KAP - Public Disclosure Platform: https://kap.org.tr/en - material \
+disclosures by BIST-listed companies (bond / loan issuance, capital increases, \
+buybacks, M&A, board decisions, investment / capex announcements).
+      * CBRT press releases: https://www.tcmb.gov.tr/wps/wcm/connect/EN/TCMB+EN/Main+Menu/Announcements/Press+Releases
+      * Ministry of Treasury and Finance (public finance): https://en.hmb.gov.tr/kategori/public-finance/sayfa/1
+  - Prefer primary and reputable sources: the three above, plus BDDK / SPK releases, \
+Reuters, Bloomberg, IFR, GlobalCapital, Debtwire, AA, Daily Sabah, Financial Times.
   - Aggregate PUBLIC information only. Do not speculate about material non-public \
 information. Be factual and neutral; this is market intelligence, not investment advice.
-  - For EVERY item, spell out the concrete "so-what" for a sell-side markets banker: \
-the specific business angle (a financing / DCM lead, a hedging opportunity, a \
-competitor mandate to watch, a client development, or a regulatory / market impact \
-on positions).
+  - Keep each item's summary to ONE short, factual sentence (aim for under ~25 words).
+  - Record the publication date and time of each item as reported by the source \
+(include the timezone if given, e.g. "2026-07-01 09:15 TRT"; use the date alone if \
+no time is available).
 """
 
 USER_PROMPT_TEMPLATE = """\
@@ -86,7 +93,9 @@ Today is {date}. Research the news most relevant to a sell-side markets banker \
 covering Türkiye from roughly the last 24 hours, and build today's intelligence \
 briefing. Cast a wide net across FX, Rates, Commodities, Credit, Equities, DCM/ECM, \
 M&A, CBRT / regulatory actions, named client institutions and corporates, and \
-competitor deal activity.
+competitor deal activity. Also review KAP (listed-company public disclosures), the \
+CBRT press-release page, and the Ministry of Treasury & Finance page for fresh \
+official items.
 
 After you have finished researching, respond with ONE JSON object and nothing else \
 (no prose before or after, no markdown code fences). Use exactly this shape:
@@ -102,10 +111,8 @@ CBRT or regulatory items, and the standout lead / client / competitor stories",
       "title": "headline of the story",
       "source": "publication name",
       "url": "https://direct-link-to-the-article",
-      "summary": "1-2 sentences: what happened",
-      "angle": "1 sentence: the concrete so-what for the reader (a financing/DCM lead, \
-a hedging opportunity, a competitor mandate, a client development, or a regulatory / \
-market-position impact)",
+      "published": "publication date and time as reported, e.g. 2026-07-01 09:15 TRT (date alone if no time)",
+      "summary": "ONE short factual sentence on what happened (under ~25 words)",
       "tag": "one of: lead, client, competitor, regulation, cbrt, market",
       "category": "one of: fx, rates, credit, commodities, equities, m&a, dcm, ecm, ratings, regulation, macro, other"
     }}
@@ -119,7 +126,10 @@ include fewer real items rather than padding with filler.
 
 def run_research(client: anthropic.Anthropic, date_str: str) -> str:
     """Run the web-search research loop and return the model's final text."""
-    tools = [{"type": "web_search_20260209", "name": "web_search", "max_uses": 12}]
+    tools = [
+        {"type": "web_search_20260209", "name": "web_search", "max_uses": 12},
+        {"type": "web_fetch_20260209", "name": "web_fetch", "max_uses": 8},
+    ]
     messages = [{"role": "user", "content": USER_PROMPT_TEMPLATE.format(date=date_str)}]
 
     # Server-side tools run a loop that can pause; re-send until it finishes.
@@ -172,8 +182,8 @@ def parse_digest(text: str, date_str: str) -> dict:
                 "title": str(item.get("title", "Untitled")).strip(),
                 "source": str(item.get("source", "")).strip(),
                 "url": str(item.get("url", "")).strip(),
+                "published": str(item.get("published", "")).strip(),
                 "summary": str(item.get("summary", "")).strip(),
-                "angle": str(item.get("angle", "")).strip(),
                 "tag": str(item.get("tag", "")).strip().lower(),
                 "category": str(item.get("category", "other")).strip().lower(),
             }
@@ -210,9 +220,6 @@ PAGE_TEMPLATE = """\
   .item a:hover {{ text-decoration: underline; }}
   .meta {{ font-size: .82rem; color: #999; margin: .25rem 0 .35rem; text-transform: uppercase; letter-spacing: .03em; }}
   .item p {{ margin: .35rem 0 0; opacity: .9; }}
-  .angle {{ margin: .5rem 0 0; font-size: .92rem; background: rgba(227,10,23,.08);
-            border-left: 3px solid #e30a17; padding: .45rem .65rem; border-radius: 5px; }}
-  .angle strong {{ color: #e30a17; }}
   .tag {{ display: inline-block; font-size: .66rem; font-weight: 700; letter-spacing: .06em;
           padding: .12rem .45rem; border-radius: 4px; color: #fff; margin-right: .5rem; vertical-align: middle; }}
   footer {{ margin-top: 3rem; font-size: .85rem; color: #999; border-top: 1px solid rgba(128,128,128,.25); padding-top: 1rem; }}
@@ -241,12 +248,11 @@ PAGE_TEMPLATE = """\
 ITEM_TEMPLATE = """\
   <li class="item">
     {title_html}
-    <div class="meta">{tag_badge}{source} · {category}</div>
+    <div class="meta">{tag_badge}{meta_text}</div>
     <p>{summary}</p>
-    {angle_html}
   </li>"""
 
-# Colour-coded badges so the desk-relevant angle is scannable at a glance.
+# Colour-coded badges so each item's relevance is scannable at a glance.
 TAG_COLORS = {
     "lead": "#0a7d2c",        # green — business opportunity
     "client": "#1558d6",      # blue  — client development
@@ -274,21 +280,19 @@ def render_items(items: list) -> str:
         else:
             tag_badge = ""
 
-        angle = item.get("angle", "")
-        angle_html = (
-            f'<p class="angle"><strong>Angle:</strong> {html.escape(angle)}</p>'
-            if angle
-            else ""
-        )
+        meta_bits = [item.get("source") or "Unknown source"]
+        if item.get("published"):
+            meta_bits.append(item["published"])
+        if item.get("category"):
+            meta_bits.append(item["category"])
+        meta_text = html.escape(" · ".join(meta_bits))
 
         rows.append(
             ITEM_TEMPLATE.format(
                 title_html=title_html,
                 tag_badge=tag_badge,
-                source=html.escape(item["source"]) or "Unknown source",
-                category=html.escape(item["category"]),
+                meta_text=meta_text,
                 summary=html.escape(item["summary"]),
-                angle_html=angle_html,
             )
         )
     return "\n".join(rows) if rows else "  <li class='item'>No notable stories today.</li>"
@@ -362,10 +366,11 @@ def send_email(data: dict) -> None:
     for item in data["items"]:
         tag = f"[{item['tag'].upper()}] " if item.get("tag") else ""
         lines.append(f"{item['rank']}. {tag}{item['title']} ({item['source']})")
+        meta = " · ".join(b for b in (item.get("published", ""), item.get("category", "")) if b)
+        if meta:
+            lines.append(f"   {meta}")
         if item["summary"]:
             lines.append(f"   {item['summary']}")
-        if item.get("angle"):
-            lines.append(f"   Angle: {item['angle']}")
         if item["url"]:
             lines.append(f"   {item['url']}")
         lines.append("")
