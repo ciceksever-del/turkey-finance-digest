@@ -35,60 +35,91 @@ ARCHIVE_DIR = SITE_DIR / "archive"
 DATA_DIR = SITE_DIR / "data"
 
 SYSTEM_PROMPT = """\
-You are a financial news analyst who writes a concise daily briefing about the \
-Republic of Turkey (Türkiye), with a strong focus on finance and the economy.
+You are a markets research analyst producing a daily intelligence briefing for a \
+senior salesperson / coverage banker on the markets desk of a large international \
+investment bank. The reader covers Türkiye. Their clients are Turkish financial \
+institutions (including the Central Bank / CBRT), Turkish banks, and large Turkish \
+and multinational corporates that operate or invest in Türkiye. The reader sells \
+financing, hedging, and risk-management solutions across FX, Rates, Commodities, \
+Credit and Equities, plus solutions tied to M&A and capital-expenditure activity.
 
-Prioritise, in roughly this order of importance:
-  - The Turkish lira (TRY), FX moves, and the Central Bank of the Republic of \
-Türkiye (CBRT / TCMB): rate decisions, reserves, policy signals.
-  - Inflation, CPI/PPI prints, and cost-of-living data.
-  - Markets: Borsa Istanbul (BIST 100), bonds, CDS, major listed companies.
-  - Banking and financial sector news.
-  - Fiscal/economic policy, the budget, and the Treasury & Finance Ministry.
-  - Major Turkish companies, deals, trade, and foreign investment.
-  - Broader political or geopolitical events ONLY when they materially move \
-markets or the economy.
+Your job is to surface news from roughly the last 24 hours that helps the reader:
+  (a) source business / revenue leads,
+  (b) stay ahead of what their clients are doing,
+  (c) track competitor (other banks / dealers) activity and mandates, and
+  (d) catch regulatory or rule changes that affect clients or the bank's market \
+positions in Türkiye.
+
+Prioritise, in roughly this order:
+  1. Lead & client signals — capital raising, refinancing, bond or syndicated-loan \
+issuance (DCM), IPOs / blocks / rights issues (ECM), M&A, large capex or investment \
+programmes, privatisations, and any FX / rates / commodity exposure that implies a \
+hedging or financing need at a Turkish FI or corporate, or at a multinational active \
+in Türkiye.
+  2. CBRT & policy — rate decisions, reserves, FX interventions and swaps, funding / \
+liquidity operations, KKM wind-down, macroprudential steps.
+  3. Regulation & rule changes — CBRT, BDDK (banking regulator), SPK/CMB (capital \
+markets board), Treasury, tax, and capital / derivatives rules, and their impact on \
+clients or on dealing and positions.
+  4. Market moves & flows — FX (USDTRY, EURTRY, TRY vol, forwards / swaps), Rates \
+(policy rate, TLREF, local curve, Eurobonds), Credit (sovereign CDS, rating actions \
+from Moody's / S&P / Fitch, corporate credit), Commodities (energy import bill, gold, \
+corporate commodity exposure), and Equities (BIST 100, sectors).
+  5. Competitor activity — mandates won or lost by other investment banks or dealers, \
+league-table moves, notable deal roles.
 
 Rules:
-  - Use the web_search tool to find genuinely recent news (roughly the last 24-48 hours).
-  - Only include real, verifiable stories with a working source URL from the search results.
-  - Prefer reputable outlets (Reuters, Bloomberg, AA, Daily Sabah, Hurriyet Daily \
-News, Financial Times, etc.). Note if a claim is uncertain.
-  - Be factual and neutral. No investment advice.
+  - Use the web_search tool to find genuinely recent, real items (roughly the last \
+24-48 hours). Only include stories with a working source URL from the results.
+  - Prefer primary and reputable sources: CBRT / BDDK / SPK releases, Reuters, \
+Bloomberg, IFR, GlobalCapital, Debtwire, AA, Daily Sabah, Financial Times.
+  - Aggregate PUBLIC information only. Do not speculate about material non-public \
+information. Be factual and neutral; this is market intelligence, not investment advice.
+  - For EVERY item, spell out the concrete "so-what" for a sell-side markets banker: \
+the specific business angle (a financing / DCM lead, a hedging opportunity, a \
+competitor mandate to watch, a client development, or a regulatory / market impact \
+on positions).
 """
 
 USER_PROMPT_TEMPLATE = """\
-Today is {date}. Research the most important news about the Republic of Turkey \
-from roughly the last 24 hours, focused on finance and the economy, and build \
-today's briefing.
+Today is {date}. Research the news most relevant to a sell-side markets banker \
+covering Türkiye from roughly the last 24 hours, and build today's intelligence \
+briefing. Cast a wide net across FX, Rates, Commodities, Credit, Equities, DCM/ECM, \
+M&A, CBRT / regulatory actions, named client institutions and corporates, and \
+competitor deal activity.
 
-After you have finished researching, respond with ONE JSON object and nothing \
-else (no prose before or after, no markdown code fences). Use exactly this shape:
+After you have finished researching, respond with ONE JSON object and nothing else \
+(no prose before or after, no markdown code fences). Use exactly this shape:
 
 {{
   "date": "{date}",
-  "headline": "a single punchy sentence capturing the day",
-  "summary": "2-4 sentence narrative overview of the day's Turkey finance news",
+  "headline": "one punchy sentence capturing the day's most business-relevant theme",
+  "summary": "3-5 sentence market-focused overview: TRY / rates / credit tone, key \
+CBRT or regulatory items, and the standout lead / client / competitor stories",
   "items": [
     {{
       "rank": 1,
       "title": "headline of the story",
       "source": "publication name",
       "url": "https://direct-link-to-the-article",
-      "summary": "1-2 sentence explanation of what happened and why it matters",
-      "category": "one of: markets, policy, banking, inflation, companies, trade, macro, other"
+      "summary": "1-2 sentences: what happened",
+      "angle": "1 sentence: the concrete so-what for the reader (a financing/DCM lead, \
+a hedging opportunity, a competitor mandate, a client development, or a regulatory / \
+market-position impact)",
+      "tag": "one of: lead, client, competitor, regulation, cbrt, market",
+      "category": "one of: fx, rates, credit, commodities, equities, m&a, dcm, ecm, ratings, regulation, macro, other"
     }}
   ]
 }}
 
-Include up to 10 items, most important first. If it was a quiet news day, include \
-fewer real items rather than padding with filler.
+Include up to 12 items, most business-relevant first. If it was a quiet news day, \
+include fewer real items rather than padding with filler.
 """
 
 
 def run_research(client: anthropic.Anthropic, date_str: str) -> str:
     """Run the web-search research loop and return the model's final text."""
-    tools = [{"type": "web_search_20260209", "name": "web_search", "max_uses": 8}]
+    tools = [{"type": "web_search_20260209", "name": "web_search", "max_uses": 12}]
     messages = [{"role": "user", "content": USER_PROMPT_TEMPLATE.format(date=date_str)}]
 
     # Server-side tools run a loop that can pause; re-send until it finishes.
@@ -134,7 +165,7 @@ def parse_digest(text: str, date_str: str) -> dict:
     items = data.get("items") or []
 
     cleaned = []
-    for i, item in enumerate(items[:10], start=1):
+    for i, item in enumerate(items[:12], start=1):
         cleaned.append(
             {
                 "rank": item.get("rank", i),
@@ -142,6 +173,8 @@ def parse_digest(text: str, date_str: str) -> dict:
                 "source": str(item.get("source", "")).strip(),
                 "url": str(item.get("url", "")).strip(),
                 "summary": str(item.get("summary", "")).strip(),
+                "angle": str(item.get("angle", "")).strip(),
+                "tag": str(item.get("tag", "")).strip().lower(),
                 "category": str(item.get("category", "other")).strip().lower(),
             }
         )
@@ -177,6 +210,11 @@ PAGE_TEMPLATE = """\
   .item a:hover {{ text-decoration: underline; }}
   .meta {{ font-size: .82rem; color: #999; margin: .25rem 0 .35rem; text-transform: uppercase; letter-spacing: .03em; }}
   .item p {{ margin: .35rem 0 0; opacity: .9; }}
+  .angle {{ margin: .5rem 0 0; font-size: .92rem; background: rgba(227,10,23,.08);
+            border-left: 3px solid #e30a17; padding: .45rem .65rem; border-radius: 5px; }}
+  .angle strong {{ color: #e30a17; }}
+  .tag {{ display: inline-block; font-size: .66rem; font-weight: 700; letter-spacing: .06em;
+          padding: .12rem .45rem; border-radius: 4px; color: #fff; margin-right: .5rem; vertical-align: middle; }}
   footer {{ margin-top: 3rem; font-size: .85rem; color: #999; border-top: 1px solid rgba(128,128,128,.25); padding-top: 1rem; }}
   footer a {{ color: #e30a17; }}
   .archive a {{ display: inline-block; margin: 0 .5rem .35rem 0; font-size: .85rem; }}
@@ -203,9 +241,20 @@ PAGE_TEMPLATE = """\
 ITEM_TEMPLATE = """\
   <li class="item">
     {title_html}
-    <div class="meta">{source} · {category}</div>
+    <div class="meta">{tag_badge}{source} · {category}</div>
     <p>{summary}</p>
+    {angle_html}
   </li>"""
+
+# Colour-coded badges so the desk-relevant angle is scannable at a glance.
+TAG_COLORS = {
+    "lead": "#0a7d2c",        # green — business opportunity
+    "client": "#1558d6",      # blue  — client development
+    "competitor": "#c25e00",  # orange— competitor activity
+    "regulation": "#6f42c1",  # purple— rule / regulatory change
+    "cbrt": "#e30a17",        # red   — central bank / policy
+    "market": "#555555",      # grey  — market move / flow
+}
 
 
 def render_items(items: list) -> str:
@@ -217,12 +266,29 @@ def render_items(items: list) -> str:
             title_html = f'<a href="{html.escape(url, quote=True)}" target="_blank" rel="noopener">{title}</a>'
         else:
             title_html = f"<span>{title}</span>"
+
+        tag = item.get("tag", "")
+        if tag:
+            color = TAG_COLORS.get(tag, "#555555")
+            tag_badge = f'<span class="tag" style="background:{color}">{html.escape(tag.upper())}</span> '
+        else:
+            tag_badge = ""
+
+        angle = item.get("angle", "")
+        angle_html = (
+            f'<p class="angle"><strong>Angle:</strong> {html.escape(angle)}</p>'
+            if angle
+            else ""
+        )
+
         rows.append(
             ITEM_TEMPLATE.format(
                 title_html=title_html,
+                tag_badge=tag_badge,
                 source=html.escape(item["source"]) or "Unknown source",
                 category=html.escape(item["category"]),
                 summary=html.escape(item["summary"]),
+                angle_html=angle_html,
             )
         )
     return "\n".join(rows) if rows else "  <li class='item'>No notable stories today.</li>"
@@ -294,9 +360,12 @@ def send_email(data: dict) -> None:
 
     lines = [f"{data['headline']}\n", f"{data['summary']}\n"]
     for item in data["items"]:
-        lines.append(f"{item['rank']}. {item['title']} ({item['source']})")
+        tag = f"[{item['tag'].upper()}] " if item.get("tag") else ""
+        lines.append(f"{item['rank']}. {tag}{item['title']} ({item['source']})")
         if item["summary"]:
             lines.append(f"   {item['summary']}")
+        if item.get("angle"):
+            lines.append(f"   Angle: {item['angle']}")
         if item["url"]:
             lines.append(f"   {item['url']}")
         lines.append("")
