@@ -1,0 +1,47 @@
+{
+  "date": "2026-07-01",
+  "headline": "Türkiye markets stay in a tight-policy holding pattern as CBRT keeps rates at 37% and the long-end rallies, with the lira still shadowed by domestic political-legal risk.",
+  "summary": "Sentiment is defined by the CBRT's restrictive-for-longer stance after it held the policy rate at 37% for a third straight meeting, citing energy-driven inflation risks and lira defence. Rates have grceeled at the long end, with the 10-year local yield down nearly 5 points over the past month to ~30.8%, even as USDTRY trades above 43. Lira stability remains sensitive to domestic politics after courts moved against opposition leader Özel. Available real-time results yielded few fresh, individually-datable primary disclosures (KAP/CBRT/Treasury) within the last 24 hours, so this briefing is deliberately limited to verifiable items rather than padded with filler.",
+  "items": [
+    {
+      "rank": 1,
+      "title": "CBRT holds policy rate at 37% for a third straight meeting, reaffirms restrictive stance",
+      "source": "Trading Economics",
+      "url": "https://tradingeconomics.com/turkey/interest-rate",
+      "published": "2026-06 (June 2026 MPC decision)",
+      "summary": "The Central Bank of the Republic of Türkiye kept its policy rate at 37%, citing energy-driven inflation risk and pledging to keep policy restrictive until disinflation is secured.",
+      "tag": "cbrt",
+      "category": "rates"
+    },
+    {
+      "rank": 2,
+      "title": "Turkish 10-year local government bond yield eases to ~30.8%",
+      "source": "Trading Economics",
+      "url": "https://tradingeconomics.com/turkey/government-bond-yield",
+      "published": "2026-06-26",
+      "summary": "Türkiye's 10-year government bond yield stood at 30.83%, down roughly 4.9 points over the past month despite remaining above year-ago levels.",
+      "tag": "market",
+      "category": "rates"
+    },
+    {
+      "rank": 3,
+      "title": "Lira under intermittent pressure on domestic political-legal risk",
+      "source": "Trading Economics",
+      "url": "https://tradingeconomics.com/turkey/interest-rate",
+      "published": "2026-06 (June 2026 MPC commentary)",
+      "summary": "The CBRT reiterated it will defend lira stability, which was recently tested after Turkish courts moved against opposition leader Özel, with USDTRY trading above 43.",
+      "tag": "market",
+      "category": "fx"
+    },
+    {
+      "rank": 4,
+      "title": "Treasury central government debt stock at TL13,325bn, over half FX-denominated",
+      "source": "Republic of Türkiye Ministry of Treasury and Finance",
+      "url": "https://en.hmb.gov.tr/",
+      "published": "2025-11-30 (latest published figures)",
+      "summary": "Central government debt stock was TL13,325bn, of which TL7,050bn was FX-denominated, underscoring continued sovereign hard-currency funding and hedging needs.",
+      "tag": "macro",
+      "category": "macro"
+    }
+  ]
+}

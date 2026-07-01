@@ -1,0 +1,117 @@
+{
+  "date": "2026-07-01",
+  "headline": "TRY pressure persists at 46.67/USD amid sustained rate hold and geopolitical energy risks.",
+  "summary": "The Turkish lira has weakened 17.4% year-to-date as the CBRT maintains its hawkish stance at 37% policy rate, keeping overnight rates tight to defend currency stability amid Middle East conflict and energy price volatility. Bond yields remain elevated at 30.8% on the 10Y, reflecting inflation and funding pressures. BIST 100 is near record highs at 14,274, up 51.8% YoY, with strong M&A momentum continuing (2025: $11.8bn deal value). FX market structure remains supportive for carry trades despite macro headwinds.",
+  "items": [
+    {
+      "rank": 1,
+      "title": "CBRT Holds Policy Rate at 37% in June, Signals Tight Stance into 2026",
+      "source": "Trading Economics / Business Turkey Today",
+      "url": "https://businessturkeytoday.com/turkey-central-bank-keeps-interest-rate-unchanged-at-37-percent-in-june-2026-meeting.html",
+      "published": "2026-06-11",
+      "summary": "<cite index=\"1-1\">CBRT maintained benchmark overnight lending rate at 37% for third straight decision in June 2026, aligned with market expectations.</cite>",
+      "tag": "cbrt",
+      "category": "rates"
+    },
+    {
+      "rank": 2,
+      "title": "USD/TRY at 46.67 as Lira Weakens 17.4% Over 12 Months",
+      "source": "Trading Economics",
+      "url": "https://tradingeconomics.com/turkey/currency",
+      "published": "2026-07-01",
+      "summary": "<cite index=\"12-4,12-5\">USD/TRY exchange rate rose to 46.6723 on July 1, 2026, up 0.06% from previous session; over 12 months lira down 17.41%.</cite>",
+      "tag": "market",
+      "category": "fx"
+    },
+    {
+      "rank": 3,
+      "title": "Turkey 10Y Bond Yield at 30.83% as Inflation and Funding Pressures Persist",
+      "source": "Trading Economics",
+      "url": "https://tradingeconomics.com/turkey/government-bond-yield",
+      "published": "2026-06-26",
+      "summary": "<cite index=\"23-1\">Yield on Turkey 10Y Bond rose to 30.83% on June 26, 2026, marking 0.06 percentage points increase from previous session.</cite>",
+      "tag": "market",
+      "category": "credit"
+    },
+    {
+      "rank": 4,
+      "title": "BIST 100 Trades Near Records at 14,274, Up 51.8% Year-over-Year",
+      "source": "Trading Economics / Investing.com",
+      "url": "https://tradingeconomics.com/turkey/stock-market",
+      "published": "2026-06-26",
+      "summary": "<cite index=\"39-1\">Turkey's BIST 100 rose to 14,274 points on June 26, 2026, gaining 0.10% from previous session and up 51.77% compared to same time last year.</cite>",
+      "tag": "market",
+      "category": "equities"
+    },
+    {
+      "rank": 5,
+      "title": "Borsa Istanbul Launches New Data Center Operations",
+      "source": "Borsa Istanbul",
+      "url": "https://www.borsaistanbul.com/en",
+      "published": "2026-06-30",
+      "summary": "Borsa İstanbul announced launch of new data center on June 30, 2026, supporting market infrastructure and trading operations.",
+      "tag": "regulation",
+      "category": "other"
+    },
+    {
+      "rank": 6,
+      "title": "Turkish M&A Deal Value Hits 13-Year High at $11.8bn in 2025, Strongest Since 2013",
+      "source": "IBA / Turkish Competition Authority",
+      "url": "https://www.ibanet.org/M&A-technology-landscape-in-Turkey",
+      "published": "2026-03-13",
+      "summary": "<cite index=\"36-13,36-15\">Turkish M&A market recorded strongest performance in over a decade in 2025; total value of 162 transactions reached $11.81bn, highest annual figure recorded since 2013.</cite>",
+      "tag": "lead",
+      "category": "m&a"
+    },
+    {
+      "rank": 7,
+      "title": "Turkish Competition Authority Amends M&A Filing Thresholds (Feb 11, 2026)",
+      "source": "IBA",
+      "url": "https://www.ibanet.org/M&A-technology-landscape-in-Turkey",
+      "published": "2026-03-13",
+      "summary": "<cite index=\"36-1,36-2\">Turkish Competition Authority thresholds amended on Feb 11, 2026; filing triggered when total Turkish turnover exceeds TRY 3bn with at least two parties exceeding TRY 1bn separately.</cite>",
+      "tag": "regulation",
+      "category": "regulation"
+    },
+    {
+      "rank": 8,
+      "title": "Foreign Holdings in Turkish Bond Market Recover to 7.5% Amid Falling CDS",
+      "source": "P.A. Turkey",
+      "url": "https://www.paturkey.com/news/2026/turkish-markets-open-2026-with-3-5-billion-bond-blitz-as-investor-confidence-recovers-26538/",
+      "published": "2026-01-07",
+      "summary": "<cite index=\"29-4,29-5\">Foreign holdings climbed back to 7.5% after plummeting following arrest of opposition figure in March; Turkey's five-year CDS dropped to 210 basis points in early January 2026, lowest since May 2018.</cite>",
+      "tag": "client",
+      "category": "credit"
+    },
+    {
+      "rank": 9,
+      "title": "CBRT Plans TRY450bn Open Market Operations Portfolio in 2026",
+      "source": "ING THINK",
+      "url": "https://think.ing.com/articles/turkish-central-bank-to-buy-additional-bonds/",
+      "published": "2026-01-09",
+      "summary": "<cite index=\"25-2\">CBRT aims to increase OMO portfolio to nominal TRY450bn in 2026 from current TRY262bn; signalling plans to buy additional government bonds.</cite>",
+      "tag": "cbrt",
+      "category": "rates"
+    },
+    {
+      "rank": 10,
+      "title": "Energy Transition and Tech M&A to Drive Turkish Deal Flow in 2026",
+      "source": "Hergüner",
+      "url": "https://herguner.av.tr/en/chambers-guide-corporate-ma-2026-trends-and-developments/",
+      "published": "2026-04-27",
+      "summary": "<cite index=\"31-19,31-20\">Turkey's gaming ecosystem continues to attract international buyers; energy transition, digital transformation and regulated-sector consolidation expected to sustain deal flow in 2026.</cite>",
+      "tag": "lead",
+      "category": "m&a"
+    },
+    {
+      "rank": 11,
+      "title": "BP-Petrol Ofisi Merger Completed; Rebranding Expected Q4 2026",
+      "source": "Hergüner",
+      "url": "https://herguner.av.tr/en/chambers-guide-corporate-ma-2026-trends-and-developments/",
+      "published": "2026-04-27",
+      "summary": "<cite index=\"31-2,31-3,31-4\">Merger between BP Turkey and Petrol Ofisi completed in February 2026; BP Turkey dissolved and distribution license transferred; rebranding process expected completed by Q4 2026.</cite>",
+      "tag": "market",
+      "category": "m&a"
+    }
+  ]
+}

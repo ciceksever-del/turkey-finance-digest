@@ -1,0 +1,6 @@
+{
+  "date": "2026-07-01",
+  "headline": "Unable to retrieve live market data due to a tool access limitation",
+  "summary": "Repeated attempts to query web_search and web_fetch (including CBRT, KAP, and Treasury primary sources) were blocked by a 'tool use limit exceeded' error for this session, preventing retrieval of any real, dated news items from the last 24-48 hours. No factual, sourced items can be reported without fabricating content, which would violate the requirement to only include verified stories with working source URLs. Please retry the request in a new session so the research tools can be invoked successfully.",
+  "items": []
+}
