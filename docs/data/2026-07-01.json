@@ -1,31 +1,67 @@
 {
   "date": "2026-07-01",
-  "headline": "Quiet, unconfirmed news flow for Turkey as sticky ~32% inflation and the CBRT easing path remain the dominant macro backdrop.",
-  "summary": "I could not verify any specific market-moving Turkey finance story from the last 24 hours in the available search results, so this briefing reflects the most recent verifiable data points rather than confirmed same-day developments. The key backdrop remains disinflation that has stalled and partly reversed, with annual CPI last reported around 32.6% (May data), against a central bank that had been gradually cutting its policy rate into 2026. Readers should treat the items below as the latest confirmable context, not as breaking July 1 headlines, and verify current levels directly at the linked sources.",
+  "headline": "Turkish bank funding season and a steady 37% CBRT hold dominate the desk-relevant flow, with rating momentum still constructive.",
+  "summary": "The most recent verifiable items point to an active Turkish bank term-funding window, led by İş Bankası's roughly $1.3bn sustainable syndicated loan, against a backdrop of the CBRT holding its policy rate at 37%. Rating tone remains supportive after Fitch improved Türkiye's outlook while Moody's held, following Moody's mid-2025 upgrade to three notches below investment grade. Primary-market appetite has been evident since Türkiye opened the year's EM dollar issuance, and banks have been rolling syndicated facilities at high rollover rates, longer tenors and lower costs. Note: fresh 24-hour wire flow could not be confirmed from available sources, so only verified recent items are included below.",
   "items": [
     {
       "rank": 1,
-      "title": "Turkish annual inflation last reported at 32.61% (May 2026), edging up from 32.37% in April",
-      "source": "Trading Economics",
-      "url": "https://tradingeconomics.com/turkey/inflation-cpi",
-      "summary": "The most recent official CPI reading showed annual inflation at 32.61% in May, up from 32.37% in April and reversing earlier disinflation, partly reflecting higher energy costs; June data was not yet available. This keeps pressure on the central bank's easing plans.",
-      "category": "inflation"
+      "title": "İş Bankası Secures Nearly $1.3 Billion in Sustainable Syndicated Loan",
+      "source": "Bazaar Times",
+      "url": "https://bazaartimes.com/is-bankasi-secures-nearly-1-3-billion-in-sustainable-syndicated-loan/",
+      "summary": "İş Bankası closed a sustainability-linked syndicated loan of nearly $1.3 billion, extending the Turkish bank term-funding season.",
+      "angle": "Live DCM/financing lead: participation, ESG-tranche structuring and associated cross-currency/rate hedging on the FX-denominated tranche, plus a read-across to other Turkish banks' upcoming rollovers.",
+      "tag": "client",
+      "category": "dcm"
     },
     {
       "rank": 2,
-      "title": "CBRT cut its policy rate to 38% in December 2025 amid 'improving' signals",
-      "source": "Daily Sabah",
-      "url": "https://www.dailysabah.com/business/economy/turkish-central-bank-lowers-key-rate-to-38-on-improving-signs",
-      "summary": "The Central Bank of the Republic of Türkiye lowered its benchmark rate to 38% in December 2025, continuing a gradual easing cycle; the direction of subsequent 2026 meetings is central to lira and bond pricing. This is background context, not a fresh decision.",
-      "category": "policy"
+      "title": "Turkey's central bank keeps policy rate unchanged at 37 percent",
+      "source": "Turkish Minute",
+      "url": "https://turkishminute.com/2026/06/11/turkeys-central-bank-keeps-policy-rate-unchanged-at-37-percent/",
+      "summary": "The CBRT held its one-week repo policy rate at 37%, keeping its cautious stance amid the disinflation path.",
+      "angle": "Rates positioning and hedging signal: informs TLREF/receiver structures, carry trades and forward pricing for clients ahead of the next MPC decision.",
+      "tag": "cbrt",
+      "category": "rates"
     },
     {
       "rank": 3,
-      "title": "CBRT reaffirmed its 5% medium-term inflation target and published a 2026 policy calendar",
-      "source": "Türkiye Today",
-      "url": "https://www.turkiyetoday.com/business/turkish-central-bank-unveils-2026-monetary-policy-calendar-reaffirms-5-inflation-targ-3212082",
-      "summary": "The central bank set out its 2026 monetary policy meeting calendar and restated its 5% inflation objective, underscoring its commitment to orthodox disinflation. It frames market expectations for the pace of rate cuts through 2026.",
-      "category": "policy"
+      "title": "Turkish banks conclude syndicated loan renewals with high rollover rates, longer maturities and lower costs",
+      "source": "bne IntelliNews",
+      "url": "https://www.intellinews.com/turkish-banks-conclude-syndicated-loan-renewals-with-high-rollover-rates-longer-maturities-and-lower-costs-393661",
+      "summary": "Turkish banks completed syndicated loan renewals achieving high rollover ratios, longer tenors and reduced spreads, reflecting improved external funding conditions.",
+      "angle": "Competitor/mandate tracking and financing lead: benchmark for pricing new facilities and identifying which Turkish FIs still need to refinance and hedge FX funding.",
+      "tag": "competitor",
+      "category": "dcm"
+    },
+    {
+      "rank": 4,
+      "title": "Fitch Boosts Turkey's Rating Outlook, Moody's Stays Put",
+      "source": "Bloomberg",
+      "url": "https://www.bloomberg.com/news/articles/2026-01-23/fitch-upgrades-turkey-s-rating-outlook-moody-s-stays-put",
+      "summary": "Fitch improved Türkiye's sovereign rating outlook while Moody's held its rating steady, underscoring diverging but broadly constructive agency views.",
+      "angle": "Credit/market impact: supportive for sovereign and bank CDS and Eurobond spreads, aiding primary issuance windows and credit hedging discussions with clients.",
+      "tag": "market",
+      "category": "ratings"
+    },
+    {
+      "rank": 5,
+      "title": "Turkey Joins EM Bond Rush With Year's First Dollar Note Issuance",
+      "source": "Bloomberg",
+      "url": "https://www.bloomberg.com/news/articles/2026-01-07/turkey-joins-em-bond-rush-with-year-s-first-dollar-note-issuance",
+      "summary": "Türkiye opened the year's EM primary calendar with its first dollar bond sale, capitalising on strong early-year demand.",
+      "angle": "DCM lead and issuance-window read: gauges investor appetite and pricing for follow-on sovereign, bank and corporate Eurobond mandates.",
+      "tag": "lead",
+      "category": "dcm"
+    },
+    {
+      "rank": 6,
+      "title": "Moody's upgrades Turkey to three notches below investment grade",
+      "source": "bne IntelliNews",
+      "url": "https://www.intellinews.com/moody-s-upgrades-turkey-to-three-notches-below-investment-grade-392949/",
+      "summary": "Moody's upgraded Türkiye's sovereign rating to three notches below investment grade, continuing the multi-agency improvement trend.",
+      "angle": "Credit backdrop for positioning: tighter sovereign risk premia support banks' and corporates' external borrowing costs and inform relative-value and CDS trades.",
+      "tag": "ratings",
+      "category": "ratings"
     }
   ]
 }
