@@ -29,7 +29,8 @@ from pathlib import Path
 
 import anthropic
 
-MODEL = "claude-opus-4-8"
+# Model can be overridden via the DIGEST_MODEL env var / repo variable.
+MODEL = os.environ.get("DIGEST_MODEL", "claude-sonnet-5")
 SITE_DIR = Path(__file__).parent / "docs"
 ARCHIVE_DIR = SITE_DIR / "archive"
 DATA_DIR = SITE_DIR / "data"
@@ -124,37 +125,52 @@ include fewer real items rather than padding with filler.
 """
 
 
-def run_research(client: anthropic.Anthropic, date_str: str) -> str:
+def _request_kwargs(model: str) -> dict:
+    """Model-specific tools and reasoning settings (kept lean to control cost)."""
+    if model.startswith("claude-haiku"):
+        # Haiku 4.5 doesn't support the newer search/fetch tools, adaptive
+        # thinking, or the effort parameter — use the basic web search only.
+        return {
+            "tools": [{"type": "web_search_20250305", "name": "web_search", "max_uses": 6}],
+        }
+    # Opus 4.8 / Sonnet 5: dynamic-filtering search + fetch, light reasoning.
+    return {
+        "tools": [
+            {"type": "web_search_20260209", "name": "web_search", "max_uses": 6},
+            {"type": "web_fetch_20260209", "name": "web_fetch", "max_uses": 3},
+        ],
+        "thinking": {"type": "adaptive"},
+        "output_config": {"effort": "low"},
+    }
+
+
+def run_research(client: anthropic.Anthropic, date_str: str, model: str = MODEL) -> str:
     """Run the web-search research loop and return the model's final text."""
-    tools = [
-        {"type": "web_search_20260209", "name": "web_search", "max_uses": 12},
-        {"type": "web_fetch_20260209", "name": "web_fetch", "max_uses": 8},
-    ]
+    extra = _request_kwargs(model)
     messages = [{"role": "user", "content": USER_PROMPT_TEMPLATE.format(date=date_str)}]
 
     # Server-side tools run a loop that can pause; re-send until it finishes.
-    for _ in range(10):
+    for _ in range(12):
         response = client.messages.create(
-            model=MODEL,
-            max_tokens=16000,
+            model=model,
+            max_tokens=12000,
             system=SYSTEM_PROMPT,
-            thinking={"type": "adaptive"},
-            tools=tools,
             messages=messages,
+            **extra,
         )
         if response.stop_reason == "pause_turn":
             messages.append({"role": "assistant", "content": response.content})
             continue
         break
     else:
-        raise RuntimeError("Research did not converge after 10 continuations.")
+        raise RuntimeError("Research did not converge after 12 continuations.")
 
     if response.stop_reason == "refusal":
         raise RuntimeError("The model refused to produce the digest.")
 
     usage = response.usage
     print(
-        f"Tokens - input: {usage.input_tokens}, output: {usage.output_tokens}",
+        f"[{model}] tokens - input: {usage.input_tokens}, output: {usage.output_tokens}",
         file=sys.stderr,
     )
 
