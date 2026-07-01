@@ -131,13 +131,13 @@ def _request_kwargs(model: str) -> dict:
         # Haiku 4.5 doesn't support the newer search/fetch tools, adaptive
         # thinking, or the effort parameter — use the basic web search only.
         return {
-            "tools": [{"type": "web_search_20250305", "name": "web_search", "max_uses": 6}],
+            "tools": [{"type": "web_search_20250305", "name": "web_search", "max_uses": 10}],
         }
     # Opus 4.8 / Sonnet 5: dynamic-filtering search + fetch, light reasoning.
     return {
         "tools": [
-            {"type": "web_search_20260209", "name": "web_search", "max_uses": 6},
-            {"type": "web_fetch_20260209", "name": "web_fetch", "max_uses": 3},
+            {"type": "web_search_20260209", "name": "web_search", "max_uses": 10},
+            {"type": "web_fetch_20260209", "name": "web_fetch", "max_uses": 5},
         ],
         "thinking": {"type": "adaptive"},
         "output_config": {"effort": "low"},
@@ -177,6 +177,14 @@ def run_research(client: anthropic.Anthropic, date_str: str, model: str = MODEL)
     return "".join(block.text for block in response.content if block.type == "text")
 
 
+_TAG_RE = re.compile(r"<[^>]+>")
+
+
+def _clean_text(value: str) -> str:
+    """Strip stray HTML / citation markup (e.g. <cite index="...">) from model text."""
+    return _TAG_RE.sub("", str(value)).strip()
+
+
 def parse_digest(text: str, date_str: str) -> dict:
     """Extract and validate the JSON digest from the model's text output."""
     # Be tolerant of stray prose or code fences: grab the outermost {...}.
@@ -186,8 +194,8 @@ def parse_digest(text: str, date_str: str) -> dict:
 
     data = json.loads(match.group(0))
     data.setdefault("date", date_str)
-    data.setdefault("headline", "Turkey finance briefing")
-    data.setdefault("summary", "")
+    data["headline"] = _clean_text(data.get("headline", "Turkey finance briefing"))
+    data["summary"] = _clean_text(data.get("summary", ""))
     items = data.get("items") or []
 
     cleaned = []
@@ -195,11 +203,11 @@ def parse_digest(text: str, date_str: str) -> dict:
         cleaned.append(
             {
                 "rank": item.get("rank", i),
-                "title": str(item.get("title", "Untitled")).strip(),
+                "title": _clean_text(item.get("title", "Untitled")),
                 "source": str(item.get("source", "")).strip(),
                 "url": str(item.get("url", "")).strip(),
                 "published": str(item.get("published", "")).strip(),
-                "summary": str(item.get("summary", "")).strip(),
+                "summary": _clean_text(item.get("summary", "")),
                 "tag": str(item.get("tag", "")).strip().lower(),
                 "category": str(item.get("category", "other")).strip().lower(),
             }
